@@ -38,7 +38,9 @@ class KittenClient(discord.Client):
             await self.send_message(message.channel, "I have only two commands: k!kittens and k!cats")
 
     async def on_ready(self):
+        game = discord.Game(name="k!kittens")
         print("Kitten bot ready for action!")
+        await self.change_presence(game=game)
 
 
 kittenClient = KittenClient()
