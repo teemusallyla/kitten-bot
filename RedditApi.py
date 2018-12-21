@@ -20,7 +20,8 @@ async def initialize_kittens():
             posts = jso["data"]["children"]
             kittens = []
             for post in posts:
-                if post["data"]["post_hint"] == "image":
+                if ("post_hint" in post["data"] and
+                    post["data"]["post_hint"] == "image"):
                     kittens.append(post["data"]["url"])
                     
 
