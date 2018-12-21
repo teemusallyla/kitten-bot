@@ -3,8 +3,9 @@ import random
 import time
 
 headers = {"User-Agent": "KittenBot v0.1 u/thesimpsonss"}
-kitten_url = "https://api.reddit.com/r/kittens"
-cat_url = "https://api.reddit.com/r/cats"
+kitten_url = "https://api.reddit.com/r/kittens?limit=100"
+cat_url = "https://api.reddit.com/r/cats?limit=100"
+upvote_requirement = 20
 kittens = []
 cats = []
 last_kitten_fetch = None
@@ -21,7 +22,8 @@ async def initialize_kittens():
             kittens = []
             for post in posts:
                 if ("post_hint" in post["data"] and
-                    post["data"]["post_hint"] == "image"):
+                    post["data"]["post_hint"] == "image" and
+                    post["data"]["ups"] >= upvote_requirement):
                     kittens.append(post["data"]["url"])
                     
 
@@ -36,8 +38,13 @@ async def initialize_cats():
             cats = []
             for post in posts:
                 if ("post_hint" in post["data"] and
-                    post["data"]["post_hint"] == "image"):
+                    post["data"]["post_hint"] == "image" and
+                    post["data"]["ups"] >= upvote_requirement):
                     cats.append(post["data"]["url"])
+
+async def refresh_lists():
+    await initialize_cats()
+    await initialize_kittens()
 
 async def get_random_kitten():
     if not last_kitten_fetch or time.time() > last_kitten_fetch + 1*60*60:

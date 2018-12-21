@@ -1,11 +1,10 @@
 import discord
-from RedditApi import *
+from RedditApi import get_random_cat, get_random_kitten, refresh_lists
 
 with open("token.txt") as f:
     token = f.read()
 
 class KittenClient(discord.Client):
-
     async def on_message(self, message):
         if message.content == "k!kittens":
             url = await get_random_kitten()
@@ -20,8 +19,7 @@ class KittenClient(discord.Client):
             ).set_image(url=url)
             await self.send_message(message.channel, content="Cats incoming!", embed=emb)
         elif message.content == "k!refresh":
-            await initialize_kittens()
-            await initialize_cats()
+            await refresh_lists()
             await self.send_message(message.channel, "Done!")
         elif message.content == "k!help":
             await self.send_message(message.channel, "I have only two commands: k!kittens and k!cats")
@@ -31,6 +29,5 @@ class KittenClient(discord.Client):
 
 
 kittenClient = KittenClient()
-
 kittenClient.run(token)
 print("Kitten bot down! Send reinforcements!")
