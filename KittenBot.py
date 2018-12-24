@@ -1,4 +1,5 @@
 import discord
+import datetime
 from RedditApi import get_random_cat, get_random_kitten, refresh_lists
 
 with open("token.txt") as f:
@@ -30,7 +31,8 @@ class KittenClient(discord.Client):
                 content="Kittens incoming!",
                 embed=emb)
             with open("log.log", "a+") as f:
-                f.write("k!kittens by {} in {}".format(
+                f.write("{}: k!kittens by {} in {}\n".format(
+                    datetime.datetime.now(),
                     message.author.name,
                     message.server))
 
@@ -45,7 +47,8 @@ class KittenClient(discord.Client):
                 content="Cats incoming!",
                 embed=emb)
             with open("log.log", "a+") as f:
-                f.write("k!cats by {} in {}".format(
+                f.write("{}: k!cats by {} in {}\n".format(
+                    datetime.datetime.now(),
                     message.author.name,
                     message.server))
 
