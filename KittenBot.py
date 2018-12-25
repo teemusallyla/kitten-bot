@@ -52,7 +52,7 @@ class KittenClient(discord.Client):
                     message.author.name,
                     message.server))
 
-        elif message.content == "k!refresh":
+        elif message.content == "k!refresh" and message.author == self.owner:
             await self.send_typing(message.channel)
             await refresh_lists()
             await self.send_message(message.channel, "Done!")
@@ -62,10 +62,20 @@ class KittenClient(discord.Client):
                 message.channel,
                 "I have only two commands: k!kittens and k!cats")
 
+        elif message.content == "k!logs" and message.author == self.owner:
+            log_length = 30
+            with open("log.log") as f:
+                lines = f.readlines()
+                await self.send_message(
+                    message.channel,
+                    "".join(lines[-log_length:]))
+
     async def on_ready(self):
         game = discord.Game(name="k!kittens")
         print("Kitten bot ready for action!")
         await self.change_presence(game=game)
+        appinfo = await self.application_info()
+        self.owner = appinfo.owner
 
 
 kittenClient = KittenClient()
