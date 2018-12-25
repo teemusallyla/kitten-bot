@@ -68,7 +68,7 @@ class KittenClient(discord.Client):
                 lines = f.readlines()
                 await self.send_message(
                     message.channel,
-                    "".join(lines[-log_length:]))
+                    "```" + "".join(lines[-log_length:]) + "```")
 
     async def on_ready(self):
         game = discord.Game(name="k!kittens")
