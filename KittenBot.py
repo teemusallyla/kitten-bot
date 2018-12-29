@@ -52,17 +52,17 @@ class KittenClient(discord.Client):
                     message.author.name,
                     message.server))
 
-        elif message.content == "k!refresh" and message.author == self.owner:
+        elif message.content.lower() == "k!refresh" and message.author == self.owner:
             await self.send_typing(message.channel)
             await refresh_lists()
             await self.send_message(message.channel, "Done!")
 
-        elif message.content == "k!help":
+        elif message.content.lower() == "k!help":
             await self.send_message(
                 message.channel,
                 "I have only two commands: k!kittens and k!cats")
 
-        elif message.content == "k!logs" and message.author == self.owner:
+        elif message.content.lower() == "k!logs" and message.author == self.owner:
             log_length = 30
             with open("log.log") as f:
                 lines = f.readlines()
