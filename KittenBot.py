@@ -20,7 +20,7 @@ cat_commands = [
 
 class KittenClient(discord.Client):
     async def on_message(self, message):
-        if message.content in kitten_commands:
+        if message.content.lower() in kitten_commands:
             await self.send_typing(message.channel)
             url = await get_random_kitten()
             emb = discord.Embed(
@@ -36,7 +36,7 @@ class KittenClient(discord.Client):
                     message.author.name,
                     message.server))
 
-        elif message.content in cat_commands:
+        elif message.content.lower() in cat_commands:
             await self.send_typing(message.channel)
             url = await get_random_cat()
             emb = discord.Embed(
