@@ -41,11 +41,12 @@ class KittenClient(discord.Client):
                 embed=emb)
             if message.channel.id == dev_channel:
                 await self.add_reaction(msg, "👍")
-            with open("log.log", "a+") as f:
-                f.write("{}: k!kittens by {} in {}\n".format(
-                    datetime.datetime.now(),
-                    message.author.name,
-                    message.server))
+            else:
+                with open("log.log", "a+") as f:
+                    f.write("{}: k!kittens by {} in {}\n".format(
+                        datetime.datetime.now(),
+                        message.author.name,
+                        message.server))
 
         elif message.content.lower() in cat_commands:
             await self.send_typing(message.channel)
@@ -62,11 +63,12 @@ class KittenClient(discord.Client):
                 embed=emb)
             if message.channel.id == dev_channel:
                 await self.add_reaction(msg, "👍")
-            with open("log.log", "a+") as f:
-                f.write("{}: k!cats by {} in {}\n".format(
-                    datetime.datetime.now(),
-                    message.author.name,
-                    message.server))
+            else:
+                with open("log.log", "a+") as f:
+                    f.write("{}: k!cats by {} in {}\n".format(
+                        datetime.datetime.now(),
+                        message.author.name,
+                        message.server))
 
         elif message.content.lower() == "k!refresh" and message.author == self.owner:
             await self.send_typing(message.channel)
