@@ -1,6 +1,8 @@
 import aiohttp
 import random
 import time
+import os
+import json
 
 headers = {"User-Agent": "KittenBot v0.1 u/thesimpsonss"}
 kitten_url = "https://api.reddit.com/r/kittens?limit=100"
@@ -10,6 +12,8 @@ kittens = []
 cats = []
 last_kitten_fetch = None
 last_cat_fetch = None
+premium_kittens = []
+premium_cats = []
 
 async def initialize_kittens():
     global kittens
@@ -45,6 +49,7 @@ async def initialize_cats():
 async def refresh_lists():
     await initialize_cats()
     await initialize_kittens()
+    await load_premiums()
 
 async def get_random_kitten():
     if not last_kitten_fetch or time.time() > last_kitten_fetch + 1*60*60:
@@ -55,3 +60,51 @@ async def get_random_cat():
     if not last_cat_fetch or time.time() > last_cat_fetch + 1*60*60:
         await initialize_cats()
     return random.choice(cats)
+
+async def load_premiums():
+    global premium_cats
+    global premium_kittens
+    if not "premiums.json" in os.listdir():
+        with open("premiums.json", "w+") as f:
+            json.dump({"kittens": [], "cats": []}, f, indent=4)
+    else:
+        with open("premiums.json") as f:
+            j = json.load(f)
+            premium_cats = j["cats"]
+            premium_kittens = j["kittens"]
+
+async def save_premiums():
+    with open("premiums.json", "w+") as f:
+        json.dump({"kittens": premium_kittens, "cats": premium_cats}, f, indent=4)
+
+async def get_premium_kitten():
+    if not premium_kittens:
+        await load_premiums()
+    if not premium_kittens:
+        return await get_random_kitten()
+    else:
+        return random.choice(premium_kittens)
+
+async def get_premium_cat():
+    if not premium_cats:
+        await load_premiums()
+    if not premium_cats:
+        return await get_random_cat()
+    else:
+        return random.choice(premium_cats)
+
+async def add_premium_kitten(url):
+    global premium_kittens
+    if not premium_kittens:
+        await load_premiums()
+    if not url in premium_kittens:
+        premium_kittens.append(url)
+        await save_premiums()
+
+async def add_premium_cat(url):
+    global premium_cats
+    if not premium_cats:
+        await load_premiums()
+    if not url in premium_cats:
+        premium_cats.append(url)
+        await save_premiums()
