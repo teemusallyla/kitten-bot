@@ -4,7 +4,7 @@ import time
 import os
 import json
 
-headers = {"User-Agent": "KittenBot v0.1 u/thesimpsonss"}
+headers = {"User-Agent": "KittenBot v0.1"}
 kitten_url = "https://api.reddit.com/r/kittens?limit=100"
 cat_url = "https://api.reddit.com/r/cats?limit=100"
 upvote_requirement = 20

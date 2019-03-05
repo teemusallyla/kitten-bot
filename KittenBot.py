@@ -1,8 +1,6 @@
 import discord
 import datetime
-from RedditApi import get_random_cat, get_random_kitten, refresh_lists
-from RedditApi import get_premium_kitten, get_premium_cat, add_premium_kitten
-from RedditApi import add_premium_cat
+from RedditApi import *
 
 with open("token.txt") as f:
     token = f.readline().rstrip()
@@ -87,6 +85,11 @@ class KittenClient(discord.Client):
                 await self.send_message(
                     message.channel,
                     "```" + "".join(lines[-log_length:]) + "```")
+
+        elif len(message.content.split()) == 2 and message.content.lower().split()[0] == "k!add" and message.author == self.owner:
+            url = message.content.lower().split()[1]
+            await add_premium_kitten(url)
+            await self.add_reaction(message, "✅")
 
     async def on_reaction_add(self, reaction, user):
         if reaction.message.author == self.user and user != self.user and reaction.emoji == "👍":
